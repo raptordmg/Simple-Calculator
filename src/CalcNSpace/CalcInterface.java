@@ -1,17 +1,15 @@
 package CalcNSpace;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
+import java.lang.*;
 import java.awt.Color;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JOptionPane;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Toolkit;
-import javax.swing.UIManager;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("unused")
@@ -39,6 +37,8 @@ public class CalcInterface {
 	private JLabel lblDisplay;
 	public static char operation;
 	public static float num1;
+	public static float num2;
+	private JButton CE;
 
 	/**
 	 * Launch the application.
@@ -75,9 +75,21 @@ public class CalcInterface {
 		operation = ' ';
 	}
 	
+	public void CE() {
+		if (num1 != 0) {
+			lblDisplay.setText(String.valueOf(num1));
+			num2 = 0;
+		}
+		else {
+			lblDisplay.setText(String.valueOf(num2));
+		}
+	}
+	
 	public void backSpace() {
-		String str = lblDisplay.getText();
-		lblDisplay.setText(str.substring(0, str.length() - 1));
+		if (lblDisplay.getText() != "") {
+			String str = lblDisplay.getText();
+			lblDisplay.setText(str.substring(0, str.length() - 1));
+		}
 	}
 	
 	public void point() {
@@ -99,10 +111,22 @@ public class CalcInterface {
 		}
 	}
 	
+	public void negate() {
+		if (lblDisplay.getText().charAt(0) != '-')
+			lblDisplay.setText("-" + lblDisplay.getText());
+		else if (lblDisplay.getText().charAt(0) == '-')
+			lblDisplay.setText(lblDisplay.getText().substring(1));
+	}
+	
+	public void sqrt() {
+		num1 = Float.parseFloat(lblDisplay.getText());
+		lblDisplay.setText(String.valueOf((Math.sqrt(Double.parseDouble(lblDisplay.getText())))));
+	}
+	
 	public void calculate() {
 		if (lblDisplay.getText() != "") {
-			Float num2 = Float.parseFloat(lblDisplay.getText());
-			float total;
+			num2 = Float.parseFloat(lblDisplay.getText());
+			double total;
 			switch (operation) {
 			case '+':
 				total = num1 + num2;
@@ -133,7 +157,7 @@ public class CalcInterface {
 		frmCalc.getContentPane().setBackground(new Color(240, 248, 255));
 		frmCalc.setResizable(false);
 		frmCalc.setTitle("Calculator");
-		frmCalc.setBounds(100, 100, 363, 300);
+		frmCalc.setBounds(100, 100, 445, 300);
 		frmCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCalc.getContentPane().setLayout(null);
 		
@@ -307,5 +331,32 @@ public class CalcInterface {
 		lblDisplay.setBackground(new Color(255, 255, 255));
 		lblDisplay.setBounds(22, 11, 305, 52);
 		frmCalc.getContentPane().add(lblDisplay);
+		
+		JButton btnSqrt = new JButton("\u221A");
+		btnSqrt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sqrt();
+			}
+		});
+		btnSqrt.setBounds(337, 70, 53, 35);
+		frmCalc.getContentPane().add(btnSqrt);
+		
+		JButton btnCE = new JButton("+/-");
+		btnCE.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				negate();
+			}
+		});
+		btnCE.setBounds(337, 116, 53, 35);
+		frmCalc.getContentPane().add(btnCE);
+		
+		btnCE = new JButton("CE");
+		btnCE.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CE();
+			}
+		});
+		btnCE.setBounds(337, 162, 53, 35);
+		frmCalc.getContentPane().add(btnCE);
 	}
 }

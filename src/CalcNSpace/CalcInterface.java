@@ -34,11 +34,12 @@ public class CalcInterface {
 	private JButton btnCalculate;
 	private JButton btnBack;
 	private JButton btnClear;
+	private JButton btnCE;
+	private JButton btnSqrt;
 	private JLabel lblDisplay;
 	public static char operation;
 	public static float num1;
 	public static float num2;
-	private JButton CE;
 
 	/**
 	 * Launch the application.
@@ -93,13 +94,15 @@ public class CalcInterface {
 	}
 	
 	public void point() {
-		String temp = lblDisplay.getText();
-		if (temp.charAt(temp.length() - 1) == '.') {
-			lblDisplay.setText(temp);
-		}
-		else {
-			temp = lblDisplay.getText() + ".";
-			lblDisplay.setText(temp);
+		if (lblDisplay.getText() != "") {
+			String temp = lblDisplay.getText();
+			if (temp.charAt(temp.length() - 1) == '.') {
+				lblDisplay.setText(temp);
+			}
+			else {
+				temp = lblDisplay.getText() + ".";
+				lblDisplay.setText(temp);
+			}
 		}
 	}
 	
@@ -112,15 +115,19 @@ public class CalcInterface {
 	}
 	
 	public void negate() {
-		if (lblDisplay.getText().charAt(0) != '-')
-			lblDisplay.setText("-" + lblDisplay.getText());
-		else if (lblDisplay.getText().charAt(0) == '-')
-			lblDisplay.setText(lblDisplay.getText().substring(1));
+		if (lblDisplay.getText() != "") {
+			if (lblDisplay.getText().charAt(0) != '-')
+				lblDisplay.setText("-" + lblDisplay.getText());
+			else if (lblDisplay.getText().charAt(0) == '-')
+				lblDisplay.setText(lblDisplay.getText().substring(1));
+		}
 	}
 	
 	public void sqrt() {
-		num1 = Float.parseFloat(lblDisplay.getText());
-		lblDisplay.setText(String.valueOf((Math.sqrt(Double.parseDouble(lblDisplay.getText())))));
+		if (lblDisplay.getText() != "") {
+			num1 = Float.parseFloat(lblDisplay.getText());
+			lblDisplay.setText(String.valueOf((Math.sqrt(Double.parseDouble(lblDisplay.getText())))));
+		}
 	}
 	
 	public void calculate() {
@@ -157,7 +164,7 @@ public class CalcInterface {
 		frmCalc.getContentPane().setBackground(new Color(240, 248, 255));
 		frmCalc.setResizable(false);
 		frmCalc.setTitle("Calculator");
-		frmCalc.setBounds(100, 100, 445, 300);
+		frmCalc.setBounds(100, 100, 419, 284);
 		frmCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCalc.getContentPane().setLayout(null);
 		
@@ -325,14 +332,7 @@ public class CalcInterface {
 		btnClear.setBounds(274, 70, 53, 35);
 		frmCalc.getContentPane().add(btnClear);
 		
-		lblDisplay = new JLabel("");
-		lblDisplay.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDisplay.setForeground(new Color(0, 0, 0));
-		lblDisplay.setBackground(new Color(255, 255, 255));
-		lblDisplay.setBounds(22, 11, 305, 52);
-		frmCalc.getContentPane().add(lblDisplay);
-		
-		JButton btnSqrt = new JButton("\u221A");
+        btnSqrt = new JButton("\u221A");
 		btnSqrt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sqrt();
@@ -341,7 +341,7 @@ public class CalcInterface {
 		btnSqrt.setBounds(337, 70, 53, 35);
 		frmCalc.getContentPane().add(btnSqrt);
 		
-		JButton btnCE = new JButton("+/-");
+		btnCE = new JButton("+/-");
 		btnCE.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				negate();
@@ -358,5 +358,12 @@ public class CalcInterface {
 		});
 		btnCE.setBounds(337, 162, 53, 35);
 		frmCalc.getContentPane().add(btnCE);
+		
+		lblDisplay = new JLabel("");
+		lblDisplay.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDisplay.setForeground(new Color(0, 0, 0));
+		lblDisplay.setBackground(new Color(255, 255, 255));
+		lblDisplay.setBounds(22, 11, 305, 52);
+		frmCalc.getContentPane().add(lblDisplay);
 	}
 }
